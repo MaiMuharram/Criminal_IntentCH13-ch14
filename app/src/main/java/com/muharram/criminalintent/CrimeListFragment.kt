@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -50,13 +51,20 @@ class CrimeListFragment : Fragment() {
         private lateinit var crime: Crime
         val titleTextView: TextView = itemView.findViewById(R.id.crime_title)
         val dateTextView: TextView = itemView.findViewById(R.id.crime_date)
+        private val solvedImageView: ImageView = itemView.findViewById(R.id.crime_solved)
 
         init {   itemView.setOnClickListener(this)    }
 
         fun bind(crime: Crime) {
             this.crime = crime
             titleTextView.text = this.crime.title
-            dateTextView.text = this.crime.date.toString()    }
+            dateTextView.setText(SimpleDateFormat("EEEE, MMM dd,yyyy").format(this.crime.date)).toString()
+            solvedImageView.visibility = if (crime.isSolved) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
 
         override fun onClick(v: View) {
             Toast.makeText(context, "${crime.title} pressed!",
@@ -69,13 +77,21 @@ class CrimeListFragment : Fragment() {
         val titleTextView: TextView = itemView.findViewById(R.id.crime_title)
         val dateTextView: TextView = itemView.findViewById(R.id.crime_date)
         val contactPoliceButton:Button = itemView.findViewById(R.id.contact_police_button)
+        private val solvedImageView: ImageView = itemView.findViewById(R.id.crime_solved)
 
         init {        itemView.setOnClickListener(this)    }
 
         fun bind(crime: Crime) {
             this.crime = crime
             titleTextView.text = this.crime.title
-            dateTextView.setText(SimpleDateFormat("EEEE, MMM dd,yyyy").format(this.crime.date)).toString()    }
+            dateTextView.setText(SimpleDateFormat("EEEE, MMM dd,yyyy").format(this.crime.date)).toString()
+            solvedImageView.visibility = if (crime.isSolved) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+        }
 
         override fun onClick(v: View) {
             Toast.makeText(context, "${crime.title} pressed!",
