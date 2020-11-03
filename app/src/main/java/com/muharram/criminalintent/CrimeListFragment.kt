@@ -1,5 +1,6 @@
 package com.muharram.criminalintent
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,10 +16,15 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
+import java.util.*
 
 private const val TAG = "CrimeListFragment"
 
 class CrimeListFragment : Fragment() {
+
+    interface Callbacks {
+        fun onCrimeSelected(crimeId: UUID)    }
+    private var callbacks: Callbacks? = null
 
     private lateinit var crimeRecyclerView: RecyclerView
     private var adapter: CrimeAdapter? = CrimeAdapter(emptyList())
@@ -29,6 +35,10 @@ class CrimeListFragment : Fragment() {
 
 
     companion object { fun newInstance(): CrimeListFragment { return CrimeListFragment()   }    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks?    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +62,10 @@ class CrimeListFragment : Fragment() {
                 }
             })
     }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null    }
 
     private fun updateUI(crimes: List<Crime>) {
         adapter = CrimeAdapter(crimes)
@@ -82,8 +96,9 @@ class CrimeListFragment : Fragment() {
         }
 
         override fun onClick(v: View) {
-            Toast.makeText(context, "${crime.title} clicked!", Toast.LENGTH_SHORT)
-                .show()
+           //Toast.makeText(context, "${crime.title} clicked!", Toast.LENGTH_SHORT)
+             //   .show()
+            callbacks?.onCrimeSelected(crime.id)
         }
     }
 
