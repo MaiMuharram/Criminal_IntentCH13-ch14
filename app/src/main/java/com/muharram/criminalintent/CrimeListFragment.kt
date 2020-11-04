@@ -68,10 +68,6 @@ class CrimeListFragment : Fragment() {
 
     private fun updateUI(crimes: List<Crime>) {
         adapter = CrimeAdapter(crimes)
-       crimeListViewModel.crimeListLiveData.observe(viewLifecycleOwner,
-        Observer { crimes ->
-            adapter?.submitList(crimes)
-        })
        crimeRecyclerView.adapter=adapter
     }
 
@@ -104,7 +100,7 @@ class CrimeListFragment : Fragment() {
             callbacks?.onCrimeSelected(crime.id)
         }
     }
-    class DiffCallback:DiffUtil.ItemCallback<Crime>(){
+   /* class DiffCallback:DiffUtil.ItemCallback<Crime>(){
         override fun areItemsTheSame(oldItem: Crime, newItem: Crime): Boolean {
            return oldItem.id == newItem.id
         }
@@ -114,10 +110,10 @@ class CrimeListFragment : Fragment() {
         }
 
 
-    }
+    }*/
 
     private inner class CrimeAdapter(var crimes: List<Crime>)
-        : ListAdapter<Crime, CrimeHolder>(DiffCallback()) {
+        : RecyclerView.Adapter<CrimeHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
                 : CrimeHolder {
