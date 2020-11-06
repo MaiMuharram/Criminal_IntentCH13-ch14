@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_crime_list.*
 import java.util.*
 
 private const val TAG = "CrimeListFragment"
@@ -62,6 +63,13 @@ class CrimeListFragment : Fragment() {
                     updateUI(crimes)
                 }
             })
+
+      new_crimbtn.setOnClickListener{
+            val crime = Crime()
+            crimeListViewModel.addCrime(crime)
+            callbacks?.onCrimeSelected(crime.id)
+            
+        }
     }
 
     override fun onDetach() {
@@ -86,8 +94,21 @@ class CrimeListFragment : Fragment() {
     }
 
     private fun updateUI(crimes: List<Crime>) {
+
+        if(crimes.isEmpty()){
+            no_crimestxt.visibility=View.VISIBLE
+            new_crimbtn.visibility=View.VISIBLE
+            crime_recycler_view.visibility=View.GONE
+
+        }else{
+            no_crimestxt.visibility=View.GONE
+            new_crimbtn.visibility=View.GONE
+            crime_recycler_view.visibility=View.VISIBLE
+        }
         adapter = CrimeAdapter(crimes)
        crimeRecyclerView.adapter=adapter
+
+
     }
 
     private inner class CrimeHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {

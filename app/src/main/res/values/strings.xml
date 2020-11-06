@@ -9,5 +9,6 @@
     <string name="crime_title">Crime Title</string>
     <string name="hand_cuffs">Handccufs</string>
     <string name="new_crime">New Crime</string>
+    <string name="empty_msg"> There are no crimes </string>
 
 </resources>
